@@ -1,10 +1,12 @@
 'use client';
 
+import useAuthState from "../hooks/useAuth";
 import AuthForm from "./AuthForm";
 
-export default function AuthPageClient() {
+export default function AuthPageClient({path}: {path: string}) {
+    const { showPassword, handleToggle, handleSubmit, register, errors, onSubmit, onSubmitLogin, login } = useAuthState();
     return (
-    <div className="flex min-h-screen bg-gray-50">
+    <div className="flex min-h-screen  bg-gray-50">
       <div className="hidden lg:flex lg:w-1/2 bg-linear-to-br from-blue-50 to-green-50 flex-col justify-between p-12">
         <div>
           <div className="flex items-center gap-2 mb-16">
@@ -31,18 +33,7 @@ export default function AuthPageClient() {
           </div>
         </div>
       </div>
-    <AuthForm handleSubmit={function (e: React.FormEvent): void {
-                throw new Error("Function not implemented.");
-            } } showPassword={false} setShowPassword={function (show: boolean): void {
-                throw new Error("Function not implemented.");
-            } } fullName={""} setFullName={function (name: string): void {
-                throw new Error("Function not implemented.");
-            } } email={""} setEmail={function (email: string): void {
-                throw new Error("Function not implemented.");
-            } } password={""} setPassword={function (password: string): void {
-                throw new Error("Function not implemented.");
-            } }        
-    />
+    <AuthForm handleSubmit={path === "/signup" ? handleSubmit(onSubmit) : login.handleSubmit(onSubmitLogin)} showPassword={showPassword} handleToggle={handleToggle} register={path === "/signup" ? register : login.register} errors={path === "/signup" ? errors : login.formState.errors} />
     </div>
     )
 }
