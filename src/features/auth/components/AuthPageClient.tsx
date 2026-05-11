@@ -3,8 +3,16 @@
 import useAuthState from "../hooks/useAuth";
 import AuthForm from "./AuthForm";
 
-export default function AuthPageClient({path}: {path: string}) {
-    const { showPassword, handleToggle, handleSubmit, register, errors, onSubmit, onSubmitLogin, login } = useAuthState();
+export default function AuthPageClient({path}: {path: "login" | "signup"}) {
+    const { showPassword,
+      setShowPassword,
+      loginState,
+      loginAction,
+      loginLoading,
+      signupState,
+      signupAction,
+      signupLoading,
+      handleToggle } = useAuthState();
     return (
     <div className="flex min-h-screen  bg-gray-50">
       <div className="hidden lg:flex lg:w-1/2 bg-linear-to-br from-blue-50 to-green-50 flex-col justify-between p-12">
@@ -33,7 +41,7 @@ export default function AuthPageClient({path}: {path: string}) {
           </div>
         </div>
       </div>
-    <AuthForm handleSubmit={path === "/signup" ? handleSubmit(onSubmit) : login.handleSubmit(onSubmitLogin)} showPassword={showPassword} handleToggle={handleToggle} register={path === "/signup" ? register : login.register} errors={path === "/signup" ? errors : login.formState.errors} />
+    <AuthForm isLoading={path === "signup" ? signupLoading : loginLoading} mode={path} action={path === "signup" ? signupAction : loginAction} showPassword={showPassword} handleToggle={handleToggle} errorsLogin={loginState.errors} errorsSignup={signupState.errors} />
     </div>
     )
 }

@@ -3,16 +3,19 @@ import Link from "next/link";
 import { FcGoogle } from "react-icons/fc";
 import { AuthFormProps } from "../models/props";
 import { usePathname } from "next/navigation";
+import Loading from "@/shared/components/Loading";
 
 
 export default function AuthForm({
     showPassword,
     handleToggle,
-    handleSubmit,
-    register,
-    errors
+    action,
+    errorsLogin,
+    errorsSignup,
+    isLoading,
 }: AuthFormProps) {
-    const path = usePathname();
+  const path = usePathname();
+  const isSignUpValidation = path === "/signup" ? errorsSignup : errorsLogin;
     return (
         <div className="w-full lg:w-1/2 flex items-center justify-center pb-0">
         <div className="w-full max-w-md ">
@@ -41,7 +44,7 @@ export default function AuthForm({
             </div>
           </div>
 
-          <form onSubmit={handleSubmit} className="space-y-4">
+          <form action={action} className="space-y-4">
             {/* Full Name */}
                 {(path === "/signup") && (
                       <div>
@@ -51,10 +54,14 @@ export default function AuthForm({
                         <input
                           type="text"
                           placeholder="e.g. Jane Doe"
-                          {...register("fullname")}
+                          name="name"
                           className="w-full border border-gray-300 rounded-lg px-4 py-3 text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
                         />
-                        {errors.fullname && <p className="text-xs text-red-600 mt-2">{errors.fullname.message}</p>}
+                        {isSignUpValidation?.name && (
+                          <p className="text-xs text-red-600 mt-2">
+                            {isSignUpValidation.name[0]}
+                          </p>
+                        )}
                       </div>
                     )}
 
@@ -66,10 +73,10 @@ export default function AuthForm({
               <input
                 type="email"
                 placeholder="name@company.com"
-                {...register("email")}
+                name="email"
                 className="w-full border border-gray-300 rounded-lg px-4 py-3 text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
               />
-              {errors.email && <p className="text-xs text-red-600 mt-2">{errors.email.message}</p>}
+              {isSignUpValidation?.email && <p className="text-xs text-red-600 mt-2">{isSignUpValidation.email[0]}</p>}
             </div>
 
             {/* Password */}
@@ -81,7 +88,7 @@ export default function AuthForm({
                 <input
                   type={showPassword ? 'text' : 'password'}
                   placeholder="••••••••"
-                  {...register("password")}
+                  name="password"
                   className="w-full border border-gray-300 rounded-lg px-4 py-3 text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
                 />
                 <button
@@ -95,16 +102,17 @@ export default function AuthForm({
                     <Eye size={20} />
                   )}
                             </button>
-              {errors.password && <p className="text-xs text-red-600 mt-2">{errors.password?.message}</p>}
+              {isSignUpValidation?.password && <p className="text-xs text-red-600 mt-2">{isSignUpValidation.password[0]}</p>}
               </div>
             </div>
 
             {/* Submit Button */}
             <button
+              disabled={isLoading}
               type="submit"
               className={`w-full ${path === "/signup" ? "bg-blue-600 hover:bg-blue-700" : "bg-green-600 hover:bg-green-700"} text-white font-semibold rounded-lg py-3 px-4 transition-colors mt-6`}
             >
-              {path === "/signup" ? "Create Account" : "Log In"}
+              {isLoading ? (path === "/signup" ? "Creating Account..." : <Loading state={"loading"} />) : (path === "/signup" ? "Create Account" : "Log In")}
             </button>
           </form>
 
