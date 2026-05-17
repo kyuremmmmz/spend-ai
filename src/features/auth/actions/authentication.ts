@@ -1,11 +1,14 @@
-'use server'
 
 import { auth } from "@/lib/auth"
 import { AuthState, SignUpState } from "../models/types";
 import { authLogin, authSignup } from "../models/zod";
-import { revalidatePath } from "next/cache";
-import { redirect } from "next/navigation";
+import { permanentRedirect, redirect } from "next/navigation";
 
+
+export async function signOut() {
+    await auth.api.signOut();
+    permanentRedirect("/")
+}
 
 
 export async function signUp(_state: SignUpState, data: FormData) {
