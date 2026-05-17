@@ -5,7 +5,6 @@ import AuthForm from "./AuthForm";
 
 export default function AuthPageClient({path}: {path: "login" | "signup"}) {
     const { showPassword,
-      setShowPassword,
       loginState,
       loginAction,
       loginLoading,

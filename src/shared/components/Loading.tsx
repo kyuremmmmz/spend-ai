@@ -6,5 +6,5 @@ interface Props{
 }
 
 export default function Loading({ state }: Props) { 
-    return <Spinner aria-label="Loading" role={state} className={cn("animate-spin", "h-5", "w-5")} />
+    return <Spinner aria-label="Loading" role={state} className={cn("flex items-center justify-center animate-spin", "h-5", "w-5")} />
 }

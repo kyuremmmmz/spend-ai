@@ -6,9 +6,13 @@ import { prisma } from "../shared/lib/prisma";
 export const auth = betterAuth({
     emailAndPassword: {
         enabled: true,
+        requireEmailVerification: true,
     },
     database: prismaAdapter(prisma, {
         provider: 'postgresql',
     }),
+    emailVerification: {
+        autoSignInAfterVerification: true,
+    },
     plugins: [nextCookies()]
 })

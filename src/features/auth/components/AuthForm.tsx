@@ -110,7 +110,7 @@ export default function AuthForm({
             <button
               disabled={isLoading}
               type="submit"
-              className={`w-full ${path === "/signup" ? "bg-blue-600 hover:bg-blue-700" : "bg-green-600 hover:bg-green-700"} text-white font-semibold rounded-lg py-3 px-4 transition-colors mt-6`}
+              className={`w-full flex items-center justify-center ${path === "/signup" ? "bg-blue-600 hover:bg-blue-700" : "bg-green-600 hover:bg-green-700"} text-white font-semibold rounded-lg py-3 px-4 transition-colors mt-6`}
             >
               {isLoading ? (path === "/signup" ? "Creating Account..." : <Loading state={"loading"} />) : (path === "/signup" ? "Create Account" : "Log In")}
             </button>

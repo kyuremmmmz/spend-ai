@@ -3,6 +3,8 @@
 import { auth } from "@/lib/auth"
 import { AuthState, SignUpState } from "../models/types";
 import { authLogin, authSignup } from "../models/zod";
+import { revalidatePath } from "next/cache";
+import { redirect } from "next/navigation";
 
 
 
@@ -40,16 +42,14 @@ export async function signIn(_state: AuthState,data: FormData) {
         return {
             errors: validated.error.flatten().fieldErrors
         }
-     }
+    }
 
-    const signInUser = await auth.api.signInEmail({
+    await auth.api.signInEmail({
         body: {
             email: data.get("email") as string,
             password: data.get("password") as string,
         }
     });
-    return {
-        user: signInUser.user,
-        session: signInUser.token,
-    }
+    redirect("/")
+    
 }
