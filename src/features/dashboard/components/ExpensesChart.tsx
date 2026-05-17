@@ -1,15 +1,7 @@
 'use client'
 
 import { Card } from '@/components/ui/card'
-import {
-  BarChart,
-  Bar,
-  XAxis,
-  YAxis,
-  CartesianGrid,
-  Tooltip,
-  ResponsiveContainer,
-} from 'recharts'
+import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts'
 
 interface Expense {
   id: string
@@ -23,92 +15,39 @@ interface ExpenseChartProps {
   expenses: Expense[]
 }
 
-export default function ExpenseChart({
-  expenses,
-}: ExpenseChartProps) {
+export default function ExpenseChart({ expenses }: ExpenseChartProps) {
+  // Group expenses by day
   const chartData = expenses
-    .reduce<{ date: string; amount: number }[]>((acc, exp) => {
-      const formattedDate = new Date(exp.date).toLocaleDateString(
-        'en-US',
-        {
-          month: 'short',
-          day: 'numeric',
-        }
-      )
-
-      const existing = acc.find(
-        (d) => d.date === formattedDate
-      )
-
+    .reduce((acc: { date: string; amount: number }[], exp) => {
+      const existing = acc.find(d => d.date === exp.date)
       if (existing) {
         existing.amount += exp.amount
       } else {
-        acc.push({
-          date: formattedDate,
-          amount: exp.amount,
-        })
+        acc.push({ date: new Date(exp.date).toLocaleDateString('en-US', { month: 'short', day: 'numeric' }), amount: exp.amount })
       }
-
       return acc
     }, [])
+    .sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime())
     .slice(-7)
 
   return (
-    <Card className="bg-slate-800/50 border-slate-700/50 backdrop-blur-xl p-6">
-      <h3 className="text-lg font-semibold mb-4">
-        Spending Trend
-      </h3>
-
+    <Card className="bg-gradient-to-br from-slate-800/40 to-slate-900/40 border border-indigo-500/20 backdrop-blur-xl p-8 hover:border-indigo-500/40 transition-all">
+      <h3 className="text-xl font-bold mb-6 bg-gradient-to-r from-indigo-400 to-cyan-400 bg-clip-text text-transparent">Spending Trend</h3>
       <ResponsiveContainer width="100%" height={300}>
         <BarChart data={chartData}>
-          <CartesianGrid
-            strokeDasharray="3 3"
-            stroke="rgba(148, 163, 184, 0.1)"
-          />
-
-          <XAxis
-            dataKey="date"
-            stroke="rgba(148, 163, 184, 0.5)"
-          />
-
-          <YAxis
-            stroke="rgba(148, 163, 184, 0.5)"
-          />
-
+          <CartesianGrid strokeDasharray="3 3" stroke="rgba(99, 102, 241, 0.1)" />
+          <XAxis dataKey="date" stroke="rgba(148, 163, 184, 0.6)" style={{ fontSize: '12px' }} />
+          <YAxis stroke="rgba(148, 163, 184, 0.6)" style={{ fontSize: '12px' }} />
           <Tooltip
-            contentStyle={{
-              backgroundColor:
-                'rgba(30, 41, 59, 0.9)',
-              border:
-                '1px solid rgba(148, 163, 184, 0.2)',
-            }}
-            labelStyle={{
-              color: 'rgb(226, 232, 240)',
-            }}
-            formatter={(value) => `₱${value}`}
+            contentStyle={{ backgroundColor: 'rgba(15, 23, 41, 0.95)', border: '1px solid rgba(99, 102, 241, 0.3)', borderRadius: '8px' }}
+            labelStyle={{ color: 'rgb(248, 250, 252)' }}
+            formatter={(value) => `₹${value}`}
           />
-
-          <Bar
-            dataKey="amount"
-            fill="url(#colorGradient)"
-          />
-
+          <Bar dataKey="amount" fill="url(#colorGradient)" radius={[8, 8, 0, 0]} />
           <defs>
-            <linearGradient
-              id="colorGradient"
-              x1="0"
-              y1="0"
-              x2="0"
-              y2="1"
-            >
-              <stop
-                offset="0%"
-                stopColor="#4ade80"
-              />
-              <stop
-                offset="100%"
-                stopColor="#06b6d4"
-              />
+            <linearGradient id="colorGradient" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%" stopColor="#6366f1" />
+              <stop offset="100%" stopColor="#06b6d4" />
             </linearGradient>
           </defs>
         </BarChart>

@@ -21,7 +21,7 @@ export default function AIInsights({ expenses }: AIInsightsProps) {
       return acc
     }, {})
 
-    const topCategory = Object.entries(categoryTotals).sort((a: [string, number], b: [string, number]) => b[1] - a[1])[0]
+    const topCategory = Object.entries(categoryTotals).sort((a, b) => b[1] - a[1])[0]
     const totalExpenses = expenses.reduce((sum, exp) => sum + exp.amount, 0)
     const avgDaily = Math.round(totalExpenses / 8)
     const foodExpenses = expenses.filter(e => e.category === 'Food').reduce((sum, e) => sum + e.amount, 0)
@@ -38,49 +38,49 @@ export default function AIInsights({ expenses }: AIInsightsProps) {
 
   return (
     <div className="space-y-4">
-      <Card className="bg-linear-to-br from-emerald-500/20 to-emerald-600/10 border-emerald-400/30 backdrop-blur-xl p-6">
-        <div className="flex items-start gap-3">
-          <div className="text-2xl">🤖</div>
+      <Card className="bg-gradient-to-br from-indigo-500/15 to-indigo-600/5 border border-indigo-500/30 backdrop-blur-xl p-6 hover:border-indigo-500/50 hover:shadow-lg hover:shadow-indigo-500/10 transition-all">
+        <div className="flex items-start gap-4">
+          <div className="text-3xl">🎯</div>
           <div className="flex-1">
-            <h4 className="font-semibold text-emerald-300 mb-1">AI Insight</h4>
+            <h4 className="font-bold text-indigo-300 mb-2">Top Spending</h4>
             <p className="text-sm text-slate-300">
-              Your top spending category is <span className="font-semibold text-emerald-400">{insights.topCategory}</span> with ₹{insights.topAmount.toLocaleString()}
+              Your biggest expense is <span className="font-bold text-indigo-300">{insights.topCategory}</span> at <span className="font-bold text-indigo-400">₹{insights.topAmount.toLocaleString()}</span>
             </p>
           </div>
         </div>
       </Card>
 
-      <Card className="bg-gradient-to-br from-cyan-500/20 to-cyan-600/10 border-cyan-400/30 backdrop-blur-xl p-6">
-        <div className="flex items-start gap-3">
-          <div className="text-2xl">📊</div>
+      <Card className="bg-gradient-to-br from-cyan-500/15 to-cyan-600/5 border border-cyan-500/30 backdrop-blur-xl p-6 hover:border-cyan-500/50 hover:shadow-lg hover:shadow-cyan-500/10 transition-all">
+        <div className="flex items-start gap-4">
+          <div className="text-3xl">📈</div>
           <div className="flex-1">
-            <h4 className="font-semibold text-cyan-300 mb-1">Daily Average</h4>
+            <h4 className="font-bold text-cyan-300 mb-2">Daily Average</h4>
             <p className="text-sm text-slate-300">
-              You&apos;re averaging <span className="font-semibold text-cyan-400">₹{insights.avgDaily}</span> per day
+              You&apos;re spending <span className="font-bold text-cyan-400">₹{insights.avgDaily}</span> per day on average
             </p>
           </div>
         </div>
       </Card>
 
-      <Card className="bg-linear-to-br from-purple-500/20 to-purple-600/10 border-purple-400/30 backdrop-blur-xl p-6">
-        <div className="flex items-start gap-3">
-          <div className="text-2xl">🍔</div>
+      <Card className="bg-gradient-to-br from-purple-500/15 to-purple-600/5 border border-purple-500/30 backdrop-blur-xl p-6 hover:border-purple-500/50 hover:shadow-lg hover:shadow-purple-500/10 transition-all">
+        <div className="flex items-start gap-4">
+          <div className="text-3xl">🍕</div>
           <div className="flex-1">
-            <h4 className="font-semibold text-purple-300 mb-1">Food Alert</h4>
+            <h4 className="font-bold text-purple-300 mb-2">Food Analysis</h4>
             <p className="text-sm text-slate-300">
-              <span className="font-semibold text-purple-400">{insights.foodPercent}%</span> of your spending is on food
+              Food accounts for <span className="font-bold text-purple-400">{insights.foodPercent}%</span> of your total spending
             </p>
           </div>
         </div>
       </Card>
 
-      <Card className="bg-linear-to-br from-amber-500/20 to-amber-600/10 border-amber-400/30 backdrop-blur-xl p-6">
-        <div className="flex items-start gap-3">
-          <div className="text-2xl">💡</div>
+      <Card className="bg-gradient-to-br from-amber-500/15 to-amber-600/5 border border-amber-500/30 backdrop-blur-xl p-6 hover:border-amber-500/50 hover:shadow-lg hover:shadow-amber-500/10 transition-all">
+        <div className="flex items-start gap-4">
+          <div className="text-3xl">💡</div>
           <div className="flex-1">
-            <h4 className="font-semibold text-amber-300 mb-1">Pro Tip</h4>
+            <h4 className="font-bold text-amber-300 mb-2">Smart Tip</h4>
             <p className="text-sm text-slate-300">
-              Track recurring expenses to identify potential savings opportunities
+              Review your recurring subscriptions and cancel unused ones to save money
             </p>
           </div>
         </div>

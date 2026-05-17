@@ -38,33 +38,33 @@ const categoryColors: Record<string, string> = {
 
 export default function ExpenseList({ expenses, onDelete }: ExpenseListProps) {
   return (
-    <Card className="bg-slate-800/50 border-slate-700/50 backdrop-blur-xl p-6">
-      <h3 className="text-lg font-semibold mb-4">Recent Expenses</h3>
+    <Card className="bg-gradient-to-br from-slate-800/40 to-slate-900/40 border border-indigo-500/20 backdrop-blur-xl p-8">
+      <h3 className="text-xl font-bold mb-6 bg-gradient-to-r from-indigo-400 to-cyan-400 bg-clip-text text-transparent">Recent Expenses</h3>
       <div className="space-y-3">
         {expenses.map((expense) => (
           <div
             key={expense.id}
-            className="flex items-center justify-between p-4 bg-slate-700/30 rounded-lg border border-slate-600/50 hover:border-slate-500/50 transition-colors"
+            className="flex items-center justify-between p-5 bg-gradient-to-r from-slate-700/30 to-slate-700/10 rounded-xl border border-indigo-500/20 hover:border-indigo-500/40 hover:shadow-lg hover:shadow-indigo-500/10 transition-all"
           >
             <div className="flex items-center gap-4 flex-1">
-              <span className="text-2xl">{categoryIcons[expense.category] || '📌'}</span>
+              <span className="text-3xl">{categoryIcons[expense.category] || '📌'}</span>
               <div className="flex-1">
-                <p className="font-medium text-slate-50">{expense.description}</p>
-                <div className="flex items-center gap-2 mt-1">
-                  <span className={`text-xs px-2.5 py-1 rounded-full border ${categoryColors[expense.category] || 'bg-slate-600/20 text-slate-400 border-slate-500/30'}`}>
+                <p className="font-semibold text-slate-50">{expense.description}</p>
+                <div className="flex items-center gap-2 mt-2">
+                  <span className={`text-xs px-3 py-1 rounded-full border font-medium ${categoryColors[expense.category] || 'bg-slate-600/20 text-slate-400 border-slate-500/30'}`}>
                     {expense.category}
                   </span>
-                  <span className="text-xs text-slate-400">{new Date(expense.date).toLocaleDateString()}</span>
+                  <span className="text-xs text-slate-500">{new Date(expense.date).toLocaleDateString()}</span>
                 </div>
               </div>
             </div>
             <div className="flex items-center gap-4">
-              <span className="text-lg font-semibold text-emerald-400">₹{expense.amount.toLocaleString()}</span>
+              <span className="text-lg font-bold bg-gradient-to-r from-indigo-400 to-cyan-400 bg-clip-text text-transparent">₹{expense.amount.toLocaleString()}</span>
               <Button
                 onClick={() => onDelete(expense.id)}
                 variant="ghost"
                 size="sm"
-                className="text-slate-400 hover:text-red-400 hover:bg-red-500/10"
+                className="text-slate-400 hover:text-red-400 hover:bg-red-500/10 transition-all"
               >
                 ✕
               </Button>

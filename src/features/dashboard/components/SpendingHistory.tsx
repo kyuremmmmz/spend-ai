@@ -54,41 +54,44 @@ export default function SpendingHistory({
   })
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-8">
       <div>
-        <h2 className="text-2xl font-bold mb-4">Spending History</h2>
-        <p className="text-slate-400">Complete timeline of all your expenses</p>
+        <h2 className="text-4xl font-bold mb-3 bg-gradient-to-r from-indigo-400 via-cyan-400 to-indigo-400 bg-clip-text text-transparent">Spending History</h2>
+        <p className="text-slate-400 text-lg">Complete timeline of all your expenses</p>
       </div>
 
-      <div className="space-y-4">
+      <div className="space-y-6">
         {Object.entries(groupedExpenses).map(([date, dayExpenses]) => (
           <div key={date}>
-            <h3 className="text-sm font-semibold text-slate-300 mb-3 px-4">
-              {new Date(date).toLocaleDateString('en-US', {
-                weekday: 'long',
-                year: 'numeric',
-                month: 'long',
-                day: 'numeric',
-              })}
-            </h3>
+            <div className="flex items-center gap-4 mb-4 px-4">
+              <h3 className="text-lg font-bold text-slate-200">
+                {new Date(date).toLocaleDateString('en-US', {
+                  weekday: 'long',
+                  year: 'numeric',
+                  month: 'short',
+                  day: 'numeric',
+                })}
+              </h3>
+              <div className="h-0.5 flex-1 bg-gradient-to-r from-indigo-500/50 to-transparent"></div>
+            </div>
 
-            <div className="space-y-2">
+            <div className="space-y-3 mb-4">
               {dayExpenses.map((expense) => (
                 <Card
                   key={expense.id}
-                  className="bg-slate-800/30 border-slate-700/50 p-4 hover:border-slate-600/50 transition-all"
+                  className="bg-gradient-to-r from-slate-700/30 to-slate-700/10 border border-indigo-500/20 p-5 hover:border-indigo-500/40 hover:shadow-lg hover:shadow-indigo-500/10 transition-all rounded-xl"
                 >
                   <div className="flex items-center justify-between">
                     <div className="flex items-center gap-4 flex-1">
-                      <span className="text-3xl">
+                      <span className="text-4xl">
                         {categoryIcons[expense.category] || '📌'}
                       </span>
                       <div className="flex-1">
-                        <p className="font-medium text-slate-50">
+                        <p className="font-semibold text-slate-50">
                           {expense.description}
                         </p>
                         <span
-                          className={`inline-block text-xs px-2.5 py-1 rounded-full border mt-2 ${
+                          className={`inline-block text-xs px-3 py-1 rounded-full border mt-2 font-medium ${
                             categoryColors[expense.category] ||
                             'bg-slate-600/20 text-slate-400 border-slate-500/30'
                           }`}
@@ -98,14 +101,14 @@ export default function SpendingHistory({
                       </div>
                     </div>
                     <div className="flex items-center gap-4">
-                      <span className="text-xl font-bold text-emerald-400">
+                      <span className="text-xl font-bold bg-gradient-to-r from-indigo-400 to-cyan-400 bg-clip-text text-transparent">
                         ₹{expense.amount.toLocaleString()}
                       </span>
                       <Button
                         onClick={() => onDelete(expense.id)}
                         variant="ghost"
                         size="sm"
-                        className="text-slate-400 hover:text-red-400 hover:bg-red-500/10"
+                        className="text-slate-400 hover:text-red-400 hover:bg-red-500/10 transition-all"
                       >
                         ✕
                       </Button>
@@ -115,10 +118,10 @@ export default function SpendingHistory({
               ))}
             </div>
 
-            <div className="px-4 py-3 mt-2 bg-slate-800/20 rounded-lg border border-slate-700/30">
-              <p className="text-sm text-slate-400">
-                Day total:{' '}
-                <span className="font-semibold text-emerald-400">
+            <div className="px-6 py-4 mx-2 bg-gradient-to-r from-indigo-500/10 to-cyan-500/10 rounded-xl border border-indigo-500/20">
+              <p className="text-sm text-slate-300">
+                <span className="text-slate-400">Daily total:</span>{' '}
+                <span className="font-bold text-lg bg-gradient-to-r from-indigo-400 to-cyan-400 bg-clip-text text-transparent">
                   ₹{dayExpenses.reduce((sum, exp) => sum + exp.amount, 0).toLocaleString()}
                 </span>
               </p>

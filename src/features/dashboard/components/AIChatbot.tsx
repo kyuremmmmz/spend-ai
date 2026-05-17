@@ -4,9 +4,21 @@ import { useState, useRef, useEffect } from 'react'
 import { Card } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
-import { Expense, Message } from '../models/interfaces'
 
+interface Message {
+  id: string
+  type: 'user' | 'ai'
+  text: string
+  timestamp: Date
+}
 
+interface Expense {
+  id: string
+  description: string
+  amount: number
+  category: string
+  date: string
+}
 
 interface AIChatBotProps {
   expenses: Expense[]
@@ -107,24 +119,24 @@ export default function AIChatBot({ expenses }: AIChatBotProps) {
     return (
       <button
         onClick={() => setIsOpen(true)}
-        className="fixed bottom-6 right-6 w-14 h-14 bg-gradient-to-br from-emerald-500 to-cyan-500 rounded-full flex items-center justify-center text-white shadow-lg hover:shadow-xl hover:scale-110 transition-all z-40"
+        className="fixed bottom-6 right-6 w-16 h-16 bg-gradient-to-br from-indigo-500 to-cyan-500 rounded-full flex items-center justify-center text-white shadow-2xl shadow-indigo-500/40 hover:shadow-indigo-500/60 hover:scale-110 transition-all z-40"
         title="Open AI Chat"
       >
-        <span className="text-2xl">💬</span>
+        <span className="text-3xl">💬</span>
       </button>
     )
   }
 
   return (
-    <Card className="fixed bottom-6 right-6 w-96 max-h-96 bg-slate-800/95 border-slate-700/50 backdrop-blur-xl p-4 shadow-2xl flex flex-col z-50">
-      <div className="flex items-center justify-between mb-4 pb-3 border-b border-slate-700/50">
-        <div className="flex items-center gap-2">
-          <span className="text-xl">🤖</span>
-          <h3 className="font-semibold">FinanceAI Assistant</h3>
+    <Card className="fixed bottom-6 right-6 w-96 max-h-96 bg-gradient-to-br from-slate-800/95 to-slate-900/95 border border-indigo-500/30 backdrop-blur-xl p-5 shadow-2xl shadow-indigo-500/20 flex flex-col z-50">
+      <div className="flex items-center justify-between mb-4 pb-4 border-b border-indigo-500/20">
+        <div className="flex items-center gap-3">
+          <div className="w-8 h-8 bg-gradient-to-br from-indigo-500 to-cyan-500 rounded-lg flex items-center justify-center text-sm">🤖</div>
+          <h3 className="font-bold bg-gradient-to-r from-indigo-400 to-cyan-400 bg-clip-text text-transparent">FinanceAI</h3>
         </div>
         <button
           onClick={() => setIsOpen(false)}
-          className="text-slate-400 hover:text-slate-200 text-xl"
+          className="text-slate-400 hover:text-slate-200 hover:bg-slate-700/50 rounded-lg p-1 transition-all"
         >
           ✕
         </button>
@@ -137,13 +149,13 @@ export default function AIChatBot({ expenses }: AIChatBotProps) {
             className={`flex ${message.type === 'user' ? 'justify-end' : 'justify-start'}`}
           >
             <div
-              className={`max-w-xs px-4 py-2 rounded-lg ${
+              className={`max-w-xs px-4 py-2 rounded-xl ${
                 message.type === 'user'
-                  ? 'bg-emerald-500/30 text-emerald-200 border border-emerald-400/30'
-                  : 'bg-slate-700/50 text-slate-100 border border-slate-600/30'
+                  ? 'bg-gradient-to-br from-indigo-500/40 to-indigo-600/30 text-slate-100 border border-indigo-400/40'
+                  : 'bg-slate-700/60 text-slate-100 border border-slate-600/40'
               }`}
             >
-              <p className="text-sm">{message.text}</p>
+              <p className="text-sm leading-relaxed">{message.text}</p>
             </div>
           </div>
         ))}
@@ -156,11 +168,11 @@ export default function AIChatBot({ expenses }: AIChatBotProps) {
           value={inputText}
           onChange={(e) => setInputText(e.target.value)}
           onKeyPress={(e) => e.key === 'Enter' && handleSendMessage()}
-          className="bg-slate-700/50 border-slate-600/50 text-slate-50 placeholder-slate-400 text-sm"
+          className="bg-slate-700/50 border border-indigo-500/30 text-slate-50 placeholder-slate-500 focus:border-indigo-500/50 focus:ring-indigo-500/20 text-sm"
         />
         <Button
           onClick={handleSendMessage}
-          className="bg-emerald-500 hover:bg-emerald-600 text-white px-3"
+          className="bg-gradient-to-r from-indigo-500 to-cyan-500 hover:from-indigo-600 hover:to-cyan-600 text-white px-3 shadow-lg shadow-indigo-500/20"
           size="sm"
         >
           Send

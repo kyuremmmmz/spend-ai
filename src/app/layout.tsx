@@ -38,7 +38,7 @@ export default function RootLayout({
     <html lang="en" className="bg-linear-to-br from-slate-950 via-slate-900 to-slate-950">
       <body className="font-sans antialiased bg-transparent text-slate-50">
         {children}
-        {process.env.NODE_ENV === 'production' && <Analytics />}
+        <Analytics />
       </body>
     </html>
   )

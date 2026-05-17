@@ -74,3 +74,12 @@ model Verification {
   @@index([identifier])
   @@map("verification")
 }
+
+
+model Expenses{
+  id String @id @default(uuid())
+  amount Float
+  description String
+  type String
+  date DateTime @default(now())
+}

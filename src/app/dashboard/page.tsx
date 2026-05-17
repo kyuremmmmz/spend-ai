@@ -4,7 +4,7 @@ import { getUserData } from "@/shared/lib/dal";
 
 export default async function page() {
     const getUser = await getUserData();
-    return <DashboardPage userName={getUser?.name} signOut={async () => {
+    return <DashboardPage userName={getUser?.name} onLogout={async () => {
         "use server"
         await signOut()
     }}/>

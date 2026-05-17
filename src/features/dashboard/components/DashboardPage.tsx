@@ -1,6 +1,6 @@
 'use client'
 
-import { useCallback,  useState } from 'react'
+import { useState } from 'react'
 import { Card } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
@@ -21,10 +21,10 @@ interface Expense {
 
 interface DashboardPageProps {
   userName: string | undefined
-  signOut: ()=>void
+  onLogout: () => void
 }
 
-export default function DashboardPage({ userName, signOut }: DashboardPageProps) {
+export default function DashboardPage({ userName, onLogout }: DashboardPageProps) {
   const [activeTab, setActiveTab] = useState<'dashboard' | 'history'>('dashboard')
   const [expenses, setExpenses] = useState<Expense[]>([
     { id: '1', description: 'Grocery Shopping', amount: 5200, category: 'Food', date: '2024-05-14' },
@@ -58,31 +58,29 @@ export default function DashboardPage({ userName, signOut }: DashboardPageProps)
     setNewExpense({ description: '', amount: '', category: 'Food' })
   }
 
-  
-
-  const handleDeleteExpense = useCallback((id: string) => {
+  const handleDeleteExpense = (id: string) => {
     setExpenses(expenses.filter(exp => exp.id !== id))
-  }, [setExpenses, expenses])
+  }
 
   const totalExpenses = expenses.reduce((sum, exp) => sum + exp.amount, 0)
 
   return (
-    <div className="min-h-screen">
+    <div className="min-h-screen bg-gradient-to-br from-slate-950 via-slate-900 to-slate-950">
       {/* Header */}
-      <header className="sticky top-0 z-50 border-b border-slate-700/50 backdrop-blur-xl bg-slate-950/50">
+      <header className="sticky top-0 z-50 border-b border-slate-700/30 backdrop-blur-2xl bg-slate-950/40">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
           <div className="flex items-center gap-3">
-            <div className="w-10 h-10 bg-gradient-to-br from-emerald-400 to-cyan-400 rounded-lg flex items-center justify-center">
-              <span className="text-lg font-bold text-slate-950">₹</span>
+            <div className="w-10 h-10 bg-gradient-to-br from-indigo-500 to-cyan-500 rounded-xl flex items-center justify-center shadow-lg shadow-indigo-500/20">
+              <span className="text-lg font-bold text-white">₹</span>
             </div>
-            <h1 className="text-xl font-bold">FinanceAI</h1>
+            <h1 className="text-xl font-bold bg-gradient-to-r from-indigo-400 to-cyan-400 bg-clip-text text-transparent">FinanceAI</h1>
           </div>
           <div className="flex items-center gap-4">
-            <span className="text-sm text-slate-400">Welcome, <span className="text-emerald-400 font-semibold">{userName}</span></span>
+            <span className="text-sm text-slate-400">Welcome, <span className="bg-gradient-to-r from-indigo-400 to-cyan-400 bg-clip-text text-transparent font-semibold">{userName}</span></span>
             <Button
-              onClick={signOut}
+              onClick={onLogout}
               variant="outline"
-              className="border-slate-600/50 text-slate-300 hover:bg-slate-800"
+              className="border-indigo-500/30 text-slate-300 hover:bg-indigo-500/10 hover:text-cyan-400 transition-all"
             >
               Logout
             </Button>
@@ -93,30 +91,38 @@ export default function DashboardPage({ userName, signOut }: DashboardPageProps)
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-8">
         {/* Welcome Section with Tabs */}
         <div>
-          <h2 className="text-3xl font-bold mb-2">Your Financial Dashboard</h2>
-          <p className="text-slate-400 mb-6">Track spending, get AI insights, and manage expenses smarter</p>
+          <div className="mb-8">
+            <h2 className="text-4xl font-bold mb-2 bg-gradient-to-r from-indigo-400 via-cyan-400 to-indigo-400 bg-clip-text text-transparent">Your Financial Dashboard</h2>
+            <p className="text-slate-400 text-lg">Track spending, get AI insights, and manage expenses smarter</p>
+          </div>
           
           {/* Tab Navigation */}
-          <div className="flex gap-2 mb-6">
+          <div className="flex gap-3 mb-8 border-b border-slate-700/50 pb-6">
             <button
               onClick={() => setActiveTab('dashboard')}
-              className={`px-6 py-2 rounded-lg font-medium transition-all ${
+              className={`px-6 py-2 font-semibold text-sm transition-all duration-300 relative ${
                 activeTab === 'dashboard'
-                  ? 'bg-gradient-to-r from-emerald-500 to-cyan-500 text-white'
-                  : 'bg-slate-800/50 text-slate-300 hover:bg-slate-800 border border-slate-700/50'
+                  ? 'text-white'
+                  : 'text-slate-400 hover:text-slate-300'
               }`}
             >
               Dashboard
+              {activeTab === 'dashboard' && (
+                <div className="absolute bottom-0 left-0 right-0 h-1 bg-gradient-to-r from-indigo-500 to-cyan-500 rounded-t"></div>
+              )}
             </button>
             <button
               onClick={() => setActiveTab('history')}
-              className={`px-6 py-2 rounded-lg font-medium transition-all ${
+              className={`px-6 py-2 font-semibold text-sm transition-all duration-300 relative ${
                 activeTab === 'history'
-                  ? 'bg-gradient-to-r from-emerald-500 to-cyan-500 text-white'
-                  : 'bg-slate-800/50 text-slate-300 hover:bg-slate-800 border border-slate-700/50'
+                  ? 'text-white'
+                  : 'text-slate-400 hover:text-slate-300'
               }`}
             >
               History
+              {activeTab === 'history' && (
+                <div className="absolute bottom-0 left-0 right-0 h-1 bg-gradient-to-r from-indigo-500 to-cyan-500 rounded-t"></div>
+              )}
             </button>
           </div>
         </div>
@@ -125,51 +131,66 @@ export default function DashboardPage({ userName, signOut }: DashboardPageProps)
         {activeTab === 'dashboard' && (
           <div className="space-y-8">
             {/* Stats Grid */}
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-          <Card className="bg-gradient-to-br from-slate-800/50 to-slate-800/30 border-slate-700/50 backdrop-blur-xl p-6">
-            <p className="text-slate-400 text-sm mb-1">Total Expenses</p>
-            <p className="text-3xl font-bold bg-gradient-to-r from-emerald-400 to-cyan-400 bg-clip-text text-transparent">
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+          <Card className="bg-gradient-to-br from-indigo-500/10 to-slate-800/50 border border-indigo-500/30 backdrop-blur-xl p-6 hover:border-indigo-500/50 transition-all duration-300 hover:shadow-lg hover:shadow-indigo-500/10">
+            <div className="flex items-center gap-3 mb-4">
+              <div className="w-10 h-10 bg-indigo-500/20 rounded-lg flex items-center justify-center">
+                <span className="text-lg">💰</span>
+              </div>
+            </div>
+            <p className="text-slate-400 text-sm mb-2">Total Expenses</p>
+            <p className="text-4xl font-bold bg-gradient-to-r from-indigo-400 to-cyan-400 bg-clip-text text-transparent">
               ₹{totalExpenses.toLocaleString()}
             </p>
-            <p className="text-xs text-slate-500 mt-2">This month</p>
+            <p className="text-xs text-slate-500 mt-3">This month</p>
           </Card>
 
-          <Card className="bg-gradient-to-br from-slate-800/50 to-slate-800/30 border-slate-700/50 backdrop-blur-xl p-6">
-            <p className="text-slate-400 text-sm mb-1">Total Transactions</p>
-            <p className="text-3xl font-bold text-cyan-400">{expenses.length}</p>
-            <p className="text-xs text-slate-500 mt-2">All time</p>
+          <Card className="bg-gradient-to-br from-cyan-500/10 to-slate-800/50 border border-cyan-500/30 backdrop-blur-xl p-6 hover:border-cyan-500/50 transition-all duration-300 hover:shadow-lg hover:shadow-cyan-500/10">
+            <div className="flex items-center gap-3 mb-4">
+              <div className="w-10 h-10 bg-cyan-500/20 rounded-lg flex items-center justify-center">
+                <span className="text-lg">📊</span>
+              </div>
+            </div>
+            <p className="text-slate-400 text-sm mb-2">Total Transactions</p>
+            <p className="text-4xl font-bold text-cyan-400">{expenses.length}</p>
+            <p className="text-xs text-slate-500 mt-3">All time</p>
           </Card>
 
-          <Card className="bg-gradient-to-br from-slate-800/50 to-slate-800/30 border-slate-700/50 backdrop-blur-xl p-6">
-            <p className="text-slate-400 text-sm mb-1">Avg. per Expense</p>
-            <p className="text-3xl font-bold text-emerald-400">
+          <Card className="bg-gradient-to-br from-purple-500/10 to-slate-800/50 border border-purple-500/30 backdrop-blur-xl p-6 hover:border-purple-500/50 transition-all duration-300 hover:shadow-lg hover:shadow-purple-500/10">
+            <div className="flex items-center gap-3 mb-4">
+              <div className="w-10 h-10 bg-purple-500/20 rounded-lg flex items-center justify-center">
+                <span className="text-lg">📈</span>
+              </div>
+            </div>
+            <p className="text-slate-400 text-sm mb-2">Avg. per Expense</p>
+            <p className="text-4xl font-bold text-purple-400">
               ₹{Math.round(totalExpenses / expenses.length)}
             </p>
-            <p className="text-xs text-slate-500 mt-2">Average amount</p>
+            <p className="text-xs text-slate-500 mt-3">Average amount</p>
           </Card>
         </div>
 
         {/* Add Expense Section */}
-        <Card className="bg-slate-800/50 border-slate-700/50 backdrop-blur-xl p-6">
-          <h3 className="text-lg font-semibold mb-4">Add New Expense</h3>
-          <div className="flex flex-col sm:flex-row gap-3">
+        <Card className="bg-gradient-to-br from-slate-800/40 to-slate-900/40 border border-indigo-500/20 backdrop-blur-xl p-8">
+          <h3 className="text-xl font-bold mb-6 bg-gradient-to-r from-indigo-400 to-cyan-400 bg-clip-text text-transparent">Add New Expense</h3>
+          <div className="flex flex-col sm:flex-row gap-4">
             <Input
-              placeholder="Description"
+              placeholder="Description (e.g. Groceries)"
               value={newExpense.description}
               onChange={(e) => setNewExpense({ ...newExpense, description: e.target.value })}
-              className="bg-slate-700/50 border-slate-600/50 text-slate-50 placeholder-slate-400"
+              className="bg-slate-700/50 border-slate-600/50 text-slate-50 placeholder-slate-500 focus:border-indigo-500/50 focus:ring-indigo-500/30 transition-all"
             />
             <Input
               placeholder="Amount"
               type="number"
               value={newExpense.amount}
               onChange={(e) => setNewExpense({ ...newExpense, amount: e.target.value })}
-              className="bg-slate-700/50 border-slate-600/50 text-slate-50 placeholder-slate-400 sm:w-32"
+              className="bg-slate-700/50 border-slate-600/50 text-slate-50 placeholder-slate-500 focus:border-indigo-500/50 focus:ring-indigo-500/30 transition-all sm:w-40"
             />
             <select
               value={newExpense.category}
               onChange={(e) => setNewExpense({ ...newExpense, category: e.target.value })}
-              className="bg-slate-700/50 border border-slate-600/50 text-slate-50 rounded-md px-3 sm:w-40"
+              className="bg-slate-700/50 border border-slate-600/50 text-slate-50 rounded-md px-4 focus:border-indigo-500/50 focus:ring-indigo-500/30 transition-all sm:w-44"
             >
               <option>Food</option>
               <option>Transport</option>
@@ -181,7 +202,7 @@ export default function DashboardPage({ userName, signOut }: DashboardPageProps)
             </select>
             <Button
               onClick={handleAddExpense}
-              className="bg-gradient-to-r from-emerald-500 to-cyan-500 hover:from-emerald-600 hover:to-cyan-600 text-white font-semibold"
+              className="bg-gradient-to-r from-indigo-500 to-cyan-500 hover:from-indigo-600 hover:to-cyan-600 text-white font-semibold shadow-lg shadow-indigo-500/20 hover:shadow-indigo-500/40 transition-all"
             >
               Add
             </Button>

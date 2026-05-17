@@ -1,12 +1,16 @@
 
+"use server"
 import { auth } from "@/lib/auth"
 import { AuthState, SignUpState } from "../models/types";
 import { authLogin, authSignup } from "../models/zod";
 import { permanentRedirect, redirect } from "next/navigation";
+import { headers } from "next/headers";
 
 
 export async function signOut() {
-    await auth.api.signOut();
+    await auth.api.signOut({
+        headers: await headers()
+    });
     permanentRedirect("/")
 }
 
